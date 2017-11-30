@@ -1,9 +1,7 @@
-using namespace std;
-
 #include "accessDirectory.h"
-#include "functions.h"
+#include "extract_video_features_funcs.h"
 
-
+using namespace std;
 
 void extract4608HsvFeatures() {
 

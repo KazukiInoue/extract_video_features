@@ -1,5 +1,5 @@
 #include "accessDirectory.h"
-#include "functions.h"
+#include "extract_video_features_funcs.h"
 
 using namespace std;
 
@@ -12,6 +12,9 @@ void extract768ColorHistogram(string colorSpace) {
 		exit(1);
 	}
 	
+	const int width = 256;
+	const int height = 256;
+
 	string rootDir[2] = {};
 	string toDir[2] = {};
 
@@ -23,7 +26,7 @@ void extract768ColorHistogram(string colorSpace) {
 	rootDir[1] = "../../src_data/shots_recommendation_test/";
 	toDir[1] = "../../src_data/recommendation_test_features/csv_shot_768" + colorSpace + "/";
 
-	for (int categoryItr = 0; categoryItr < 1; categoryItr++) {
+	for (int categoryItr = 0; categoryItr < 2; categoryItr++) {
 
 		vector<string> videoList = Dir::readIncludingFolder(rootDir[categoryItr]);
 
@@ -35,7 +38,7 @@ void extract768ColorHistogram(string colorSpace) {
 
 				vector<vector<int>> colorHist;
 
-				// 各フレームの取得
+				// 各画像の取得
 				for (int imgItr = 0; imgItr < imgList.size(); imgItr++) {
 					if (imgList[imgItr] != "." && imgList[imgItr] != "..") {
 
@@ -47,7 +50,7 @@ void extract768ColorHistogram(string colorSpace) {
 							exit(1);
 						}
 
-						cv::resize(uSrc, uSrc, cv::Size(), 256 / (double)uSrc.cols, 256 / (double)uSrc.rows);
+						cv::resize(uSrc, uSrc, cv::Size(), width / (double)uSrc.cols, height / (double)uSrc.rows);
 
 						cv::Mat uDst;
 						if (colorSpace == "bgr") {
@@ -60,7 +63,7 @@ void extract768ColorHistogram(string colorSpace) {
 							cv::cvtColor(uSrc, uDst, CV_BGR2Lab);
 						}
 
-						//各フレームの3つのチャンネルの値をそれぞれ256ビンのヒストグラムとして出力
+						//各画像の3つのチャンネルの値をそれぞれ256ビンのヒストグラムとして出力
 						cv::Mat uChannels[3];
 						cv::split(uDst, uChannels);
 

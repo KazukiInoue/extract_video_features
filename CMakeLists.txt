@@ -15,7 +15,8 @@ find_package(OpenCV REQUIRED)
 
 #インクルードパスの指定
 include_directories( ${OpenCV_INCLUDE_DIRS})
-add_executable(extract_video_features main.cpp extract20HsvFeatures.cpp extract60ColorThemes.cpp extract80HsvFeatures.cpp extract768BgrFeatures.cpp extract768HsvFeatures.cpp extract768ColorHistogram.cpp extract768LabFeatures.cpp extract4608HsvFeatures.cpp)
+add_executable(extract_video_features main.cpp extract20HsvFeatures.cpp extract60ColorThemes.cpp extract80HsvFeatures.cpp extract768ColorHistogram.cpp  extract4608HsvFeatures.cpp kMeansColorSubtraction.cpp selectPrincipalColorThemes.cpp)
+
 #リリース版の設定
 set(CMAKE_BUILD_TYPE Debug;Release)
 
