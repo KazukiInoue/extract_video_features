@@ -11,19 +11,19 @@ void extract768ColorHistogram(string colorSpace) {
 		std::cerr << colorSpace << " can't be dealed with by this program!" << endl;
 		exit(1);
 	}
-
+	
 	string rootDir[2] = {};
 	string toDir[2] = {};
 
 	// category=0:OMV200
-	rootDir[0] = "C:/MUSIC_RECOMMENDATION/src_data/shots_OMV200/";
-	toDir[0] = "C:/MUSIC_RECOMMENDATION/src_data/train_features/OMV200_csv_shot_768" + colorSpace + "/";
+	rootDir[0] = "../../src_data/shots_OMV200/";
+	toDir[0] = "../../src_data/train_features/OMV200_csv_shot_768" + colorSpace + "/";
 
 	// category=1:recommendation_test
-	rootDir[1] = "C:/MUSIC_RECOMMENDATION/src_data/shots_recommendation_test/";
-	toDir[1] = "C:/MUSIC_RECOMMENDATION/src_data/recommendation_test_features/csv_shot_768" + colorSpace + "/";
+	rootDir[1] = "../../src_data/shots_recommendation_test/";
+	toDir[1] = "../../src_data/recommendation_test_features/csv_shot_768" + colorSpace + "/";
 
-	for (int categoryItr = 0; categoryItr < 2; categoryItr++) {
+	for (int categoryItr = 0; categoryItr < 1; categoryItr++) {
 
 		vector<string> videoList = Dir::readIncludingFolder(rootDir[categoryItr]);
 
@@ -50,8 +50,10 @@ void extract768ColorHistogram(string colorSpace) {
 						cv::resize(uSrc, uSrc, cv::Size(), 256 / (double)uSrc.cols, 256 / (double)uSrc.rows);
 
 						cv::Mat uDst;
-
-						if (colorSpace == "hsv") {
+						if (colorSpace == "bgr") {
+							uDst = uSrc.clone();
+						}
+						else if (colorSpace == "hsv") {
 							cv::cvtColor(uSrc, uDst, CV_BGR2HSV_FULL);
 						}
 						else if (colorSpace == "lab") {

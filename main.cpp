@@ -7,13 +7,13 @@
 int main(int argc, char *argv[])
 {
 	//extract20HsvFeatures();
-	extract80HsvFeatures();
+	//extract80HsvFeatures();
 	extract768ColorHistogram("bgr");
 	extract768ColorHistogram("hsv");
 	extract768ColorHistogram("lab");
-	//extract768BgrFeatures();
-	//extract768HsvFeatures();
-	//extract768LabFeatures();
+	extract768BgrFeatures();
+	extract768HsvFeatures();
+	extract768LabFeatures();
 	//extract4608HsvFeatures();
 
 

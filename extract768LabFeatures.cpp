@@ -6,7 +6,7 @@ using namespace std;
 
 void extract768LabFeatures() {
 
-	for (int entireItr = 0; entireItr < 2; entireItr++) {
+	for (int entireItr = 0; entireItr < 1; entireItr++) {
 
 		bool isTrainData = true;
 
@@ -21,12 +21,12 @@ void extract768LabFeatures() {
 		string rootDir = "";
 		string toDir = "";
 		if (isTrainData) {
-			rootDir = "C:/MUSIC_RECOMMENDATION/src_data/shots_OMV200/";
-			toDir = "C:/MUSIC_RECOMMENDATION/src_data/train_features/OMV200_csv_shot_768lab/";
+			rootDir = "../../src_data/shots_OMV200/";
+			toDir = "../../src_data/train_features/OMV200_csv_shot_768lab/";
 		}
 		else {
-			rootDir = "C:/MUSIC_RECOMMENDATION/src_data/shots_recommendation_test/";
-			toDir = "C:/MUSIC_RECOMMENDATION/src_data/recommendation_test_features/csv_shot_768lab/";
+			rootDir = "../../src_data/shots_recommendation_test/";
+			toDir = "../../src_data/recommendation_test_features/csv_shot_768lab/";
 		}
 
 		vector<string> videoList = Dir::readIncludingFolder(rootDir);
