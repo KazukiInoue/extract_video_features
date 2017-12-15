@@ -19,7 +19,7 @@ void extract20HsvFeatures() {
 
 			vector<vector<double>> outData;
 
-			vector<string> frameList = Dir::readOutOfFolder(rootDir + "/" + videoList[videoItr]);
+			vector<string> frameList = Dir::readExcludingFolder(rootDir + "/" + videoList[videoItr]);
 
 
 			// ŠeƒtƒŒ[ƒ€‚Ìæ“¾

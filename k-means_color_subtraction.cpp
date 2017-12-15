@@ -61,6 +61,7 @@ void kMeansColorSubtraction(cv::Mat &dst, std::vector<std::vector<double>> &clus
 		tmpClusterInfo.push_back(blue_center);
 		tmpClusterInfo.push_back(green_center);
 		tmpClusterInfo.push_back(red_center);
+
 		clusterInfo.push_back(tmpClusterInfo);
 	}
 }

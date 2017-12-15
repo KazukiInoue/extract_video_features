@@ -62,7 +62,7 @@ public:
 		return fileList;
 	}
 
-	static vector<string> readOutOfFolder(string folder) {
+	static vector<string> readExcludingFolder(string folder) {
 		// éŒ¾
 		vector<string> fileList;
 		HANDLE hFind;

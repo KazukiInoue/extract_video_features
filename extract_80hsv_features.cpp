@@ -56,7 +56,7 @@ void extract80HsvFeatures() {
 
 				vector<vector<double>> hsvFeatures;
 
-				vector<string> frameList = Dir::readOutOfFolder(rootDir + videoList[videoItr]);
+				vector<string> frameList = Dir::readExcludingFolder(rootDir + videoList[videoItr]);
 
 
 				// ŠeƒtƒŒ[ƒ€‚Ìæ“¾

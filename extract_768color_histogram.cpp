@@ -11,20 +11,15 @@ void extract768ColorHistogram(string colorSpace) {
 		std::cerr << colorSpace << " can't be dealed with by this program!" << endl;
 		exit(1);
 	}
-	
+
 	const int width = 256;
 	const int height = 256;
 
-	string rootDir[2] = {};
-	string toDir[2] = {};
+	string rootDir[2] = { "../../src_data/shots_OMV200_improved/" ,
+						  "../../src_data/shots_OMV62of65_improved/" };
 
-	// category=0:OMV200
-	rootDir[0] = "../../src_data/shots_OMV200/";
-	toDir[0] = "../../src_data/train_features/OMV200_csv_shot_768" + colorSpace + "/";
-
-	// category=1:recommendation_test
-	rootDir[1] = "../../src_data/shots_recommendation_test/";
-	toDir[1] = "../../src_data/recommendation_test_features/csv_shot_768" + colorSpace + "/";
+	string toDir[2] = { "../../src_data/train_features/OMV200_csv_shot_768" + colorSpace + "/",
+					    "../../src_data/train_features/OMV62of65_csv_shot_768" + colorSpace + "/" };
 
 	for (int categoryItr = 0; categoryItr < 2; categoryItr++) {
 
@@ -34,7 +29,7 @@ void extract768ColorHistogram(string colorSpace) {
 		for (int videoItr = 0; videoItr < videoList.size(); videoItr++) {
 			if (videoList[videoItr] != "." && videoList[videoItr] != "..") {
 
-				vector<string> imgList = Dir::readOutOfFolder(rootDir[categoryItr] + videoList[videoItr]);
+				vector<string> imgList = Dir::readExcludingFolder(rootDir[categoryItr] + videoList[videoItr]);
 
 				vector<vector<int>> colorHist;
 
