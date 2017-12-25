@@ -39,7 +39,7 @@ void observeWeights(const Mat& weights)
 	assert(std::abs(s - 1.0) < Epsilon);
 }
 
-void observeLabelsAndMeans(int i, Mat& subtImg, std::vector<std::vector<double>> &clusterInfo, const Mat& means, const Mat labels, int height, int width, const int clusterNum)
+void observeLabelsAndMeans(Mat& subtImg, std::vector<std::vector<double>> &clusterInfo, const Mat& means, const Mat labels, int height, int width, const int clusterNum)
 {
 	const int dimension = 3;
 
@@ -116,31 +116,29 @@ void emAlgorithmColorSubtraction(Mat& subtImg, std::vector<std::vector<double>> 
 	Mat labels;
 	Mat probs;
 
-	for (int itr = 0; itr < 1; itr++) {
+	model->trainEM(samples, noArray(), labels, probs);
 
-		model->trainEM(samples, noArray(), labels, probs);
+	assert(labels.type() == CV_32SC1);
+	assert(labels.rows == image_rows * image_cols);
+	assert(labels.cols == 1);
 
-		assert(labels.type() == CV_32SC1);
-		assert(labels.rows == image_rows * image_cols);
-		assert(labels.cols == 1);
+	assert(probs.type() == CV_64FC1);
+	assert(probs.rows == image_rows * image_cols);
+	assert(probs.cols == clusterNum);
+	// observeProbs(/*&*/probs);
 
-		assert(probs.type() == CV_64FC1);
-		assert(probs.rows == image_rows * image_cols);
-		assert(probs.cols == clusterNum);
-		observeProbs(/*&*/probs);
+	const Mat means = model->getMeans();
 
-		const Mat means = model->getMeans();
+	assert(means.type() == CV_64FC1);
+	assert(means.rows == clusterNum);
+	assert(means.cols == dimension);
+	observeLabelsAndMeans(/*&*/subtImg,/*&*/clusterInfo,/*&*/means, labels, image_rows, image_cols, clusterNum);
 
-		assert(means.type() == CV_64FC1);
-		assert(means.rows == clusterNum);
-		assert(means.cols == dimension);
-		observeLabelsAndMeans(itr,/*&*/subtImg,/*&*/clusterInfo,/*&*/means, labels, image_rows, image_cols, clusterNum);
+	const Mat weights = model->getWeights();
 
-		const Mat weights = model->getWeights();
+	assert(weights.type() == CV_64FC1);
+	assert(weights.rows == 1);
+	assert(weights.cols == clusterNum);
+	// observeWeights(/*&*/weights);
 
-		assert(weights.type() == CV_64FC1);
-		assert(weights.rows == 1);
-		assert(weights.cols == clusterNum);
-		// observeWeights(/*&*/weights);
-	}
 }

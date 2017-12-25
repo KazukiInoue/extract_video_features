@@ -1,6 +1,8 @@
 #include "accessDirectory.h"
 #include "extract_video_features_funcs.h"
 
+#include <time.h>
+
 using namespace std;
 
 void bgr2OtherColorSpace(vector<vector<vector<double>>> &colorThemes, string colorSpace) {
@@ -35,7 +37,7 @@ void bgr2OtherColorSpace(vector<vector<vector<double>>> &colorThemes, string col
 }
 
 
-void extractColorThemes(string colorSpace, string mlType) {
+void extractColorThemes(string colorSpace, string mlType, const int clusterNum, const int numToExtract) {
 
 	if (mlType != "kMeans" && mlType != "em") {
 		cerr << "We haven't dealed with " << mlType << " algorithm type yet." << endl;
@@ -50,27 +52,20 @@ void extractColorThemes(string colorSpace, string mlType) {
 	const int width = 256;
 	const int height = 256;
 
-	const int clusterNum = 5;
-	const int numToExtract = 5;
+	string rootDir[2] = { "../../src_data/shots_OMV200_improved/",
+						  "../../src_data/shots_OMV62of65_improved/" };
+	string toDir[2] = { "../../src_data/train_features/OMV200_csv_shot_" + to_string(numToExtract * 3) + "color_themes_" + colorSpace + "/",
+						"../../src_data/train_features/OMV62of65_csv_shot_" + to_string(numToExtract * 3) + "color_themes_" + colorSpace + "/" };
 
-	string rootDir[2] = {};
-	string toDir[2] = {};
-
-	// category=0:OMV200
-	rootDir[0] = "../../src_data/shots_OMV200_improved/";
-	toDir[0] = "../../src_data/train_features/OMV200_csv_shot_60color_themes_" + colorSpace + "/";
-
-	// category=1:recommendation_test
-	rootDir[1] = "../../src_data/shots_OMV62of65_improved/";
-	toDir[1] = "../../src_data/train_features/csv_shot_60color_themes_" + colorSpace + "/";
-
-	for (int categoryItr = 0; categoryItr < 2; categoryItr++) {
+	for (int categoryItr = 1; categoryItr < 2; categoryItr++) {
 
 		vector<string> videoList = Dir::readIncludingFolder(rootDir[categoryItr]);
 
 		// videoXフォルダに入る
 		for (int videoItr = 0; videoItr < videoList.size(); videoItr++) {
 			if (videoList[videoItr] != "." && videoList[videoItr] != "..") {
+
+				cout << videoList[videoItr] << endl;
 
 				vector<string> imgList = Dir::readExcludingFolder(rootDir[categoryItr] + videoList[videoItr]);
 
@@ -79,6 +74,10 @@ void extractColorThemes(string colorSpace, string mlType) {
 				// 各画像の取得
 				for (int imgItr = 0; imgItr < imgList.size(); imgItr++) {
 					if (imgList[imgItr] != "." && imgList[imgItr] != "..") {
+
+						clock_t begin = clock();
+
+						cout << imgList[imgItr] << endl;
 
 						string srcPath = rootDir[categoryItr] + videoList[videoItr] + "/" + imgList[imgItr];
 
@@ -104,6 +103,10 @@ void extractColorThemes(string colorSpace, string mlType) {
 						selectPrincipalColorThemes(/*&*/tmpColorThemes, subtImg, clusterNum, numToExtract, clusterInfo);
 
 						colorThemes.push_back(tmpColorThemes);
+
+						clock_t end = clock();
+
+						cout << (double)(end - begin) / CLOCKS_PER_SEC << "秒かかりました" << endl;
 					}
 				}
 
@@ -123,7 +126,7 @@ void extractColorThemes(string colorSpace, string mlType) {
 
 
 				// csvで出力
-				string csv_name = toDir[categoryItr] + "/" + videoList[videoItr] + "_shot_" + to_string(clusterNum * 3) + "color_themes_" + colorSpace + ".csv";
+				string csv_name = toDir[categoryItr] + "/" + videoList[videoItr] + "_shot_" + to_string(numToExtract * 3) + "color_themes_" + colorSpace + ".csv";
 				ofstream ofs(csv_name);
 
 				int imgNum = colorThemes.size();

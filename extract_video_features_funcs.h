@@ -13,7 +13,7 @@
 using namespace std;
 
 void extract20HsvFeatures();
-void extractColorThemes(string colorSpace, string mlType);
+void extractColorThemes(string colorSpace, string mlType, const int clusteNum, const int numToExtract);
 void extract80HsvFeatures();
 void extract768ColorHistogram(string colorSpace);
 void extract512ColorHistogram(string colorSpace);
